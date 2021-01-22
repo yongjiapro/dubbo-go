@@ -52,10 +52,3 @@ func TestGetAsyncProxy(t *testing.T) {
 	proxy := proxyFactory.GetAsyncProxy(protocol.NewBaseInvoker(*url), async.CallBack, url)
 	assert.NotNil(t, proxy)
 }
-
-func TestGetInvoker(t *testing.T) {
-	proxyFactory := NewDefaultProxyFactory()
-	url := common.NewURLWithOptions()
-	invoker := proxyFactory.GetInvoker(*url)
-	assert.True(t, invoker.IsAvailable())
-}

@@ -36,8 +36,16 @@ import (
 	invocation_impl "github.com/apache/dubbo-go/protocol/invocation"
 )
 
+type Proxy interface {
+	Implement(v common.RPCService)
+	Get() common.RPCService
+	GetCallback() interface{}
+}
+
+var _ Proxy = new(DefaultProxy)
+
 // nolint
-type Proxy struct {
+type DefaultProxy struct {
 	rpc         common.RPCService
 	invoke      protocol.Invoker
 	callBack    interface{}
@@ -50,9 +58,9 @@ var (
 	typError = reflect.Zero(reflect.TypeOf((*error)(nil)).Elem()).Type()
 )
 
-// NewProxy create service proxy.
-func NewProxy(invoke protocol.Invoker, callBack interface{}, attachments map[string]string) *Proxy {
-	return &Proxy{
+// NewDefaultProxy create service proxy.
+func NewDefaultProxy(invoke protocol.Invoker, callBack interface{}, attachments map[string]string) *DefaultProxy {
+	return &DefaultProxy{
 		invoke:      invoke,
 		callBack:    callBack,
 		attachments: attachments,
@@ -65,8 +73,7 @@ func NewProxy(invoke protocol.Invoker, callBack interface{}, attachments map[str
 // 		type XxxProvider struct {
 //  		Yyy func(ctx context.Context, args []interface{}, rsp *Zzz) error
 // 		}
-func (p *Proxy) Implement(v common.RPCService) {
-
+func (p *DefaultProxy) Implement(v common.RPCService) {
 	// check parameters, incoming interface must be a elem's pointer.
 	valueOf := reflect.ValueOf(v)
 	logger.Debugf("[Implement] reflect.TypeOf: %s", valueOf.String())
@@ -222,11 +229,11 @@ func (p *Proxy) Implement(v common.RPCService) {
 }
 
 // Get gets rpc service instance.
-func (p *Proxy) Get() common.RPCService {
+func (p *DefaultProxy) Get() common.RPCService {
 	return p.rpc
 }
 
 // GetCallback gets callback.
-func (p *Proxy) GetCallback() interface{} {
+func (p *DefaultProxy) GetCallback() interface{} {
 	return p.callBack
 }

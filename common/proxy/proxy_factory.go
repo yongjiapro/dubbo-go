@@ -24,9 +24,8 @@ import (
 
 // ProxyFactory interface.
 type ProxyFactory interface {
-	GetProxy(invoker protocol.Invoker, url *common.URL) *Proxy
-	GetAsyncProxy(invoker protocol.Invoker, callBack interface{}, url *common.URL) *Proxy
-	GetInvoker(url common.URL) protocol.Invoker
+	GetProxy(invoker protocol.Invoker, url *common.URL) Proxy
+	GetAsyncProxy(invoker protocol.Invoker, callBack interface{}, url *common.URL) Proxy
 }
 
 // Option will define a function of handling ProxyFactory

@@ -56,7 +56,7 @@ func (s *TestServiceInt) Reference() string {
 func TestProxyImplement(t *testing.T) {
 
 	invoker := protocol.NewBaseInvoker(common.URL{})
-	p := NewProxy(invoker, nil, map[string]string{constant.ASYNC_KEY: "false"})
+	p := NewDefaultProxy(invoker, nil, map[string]string{constant.ASYNC_KEY: "false"})
 	s := &TestService{}
 	p.Implement(s)
 
