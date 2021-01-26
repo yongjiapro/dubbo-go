@@ -6,7 +6,6 @@ import (
 	"github.com/apache/dubbo-go/common"
 	"github.com/apache/dubbo-go/common/constant"
 	"github.com/apache/dubbo-go/common/logger"
-	"github.com/apache/dubbo-go/config"
 	"github.com/apache/dubbo-go/protocol"
 	"github.com/apache/dubbo-go/protocol/invocation"
 	"reflect"
@@ -24,9 +23,9 @@ func NewGenericResultServiceProxyImplFunc(attachments map[string]string) Impleme
 		serviceElem := serviceValue.Elem()
 		serviceType := serviceElem.Type()
 		// Enforce GenericResultService
-		if _, ok := rpc.(*config.GenericResultService); !ok {
-			logger.Errorf("Generic proxy requires <*config.GenericResultService> to implement, was: %s",
-				serviceType.String())
+		srvType := serviceType.String()
+		if "config.GenericResultService" != srvType {
+			logger.Errorf("Generic proxy requires <*config.GenericResultService> to implement, was: %s", srvType)
 			return
 		}
 		numField := serviceElem.NumField()
