@@ -17,7 +17,10 @@
 
 package config
 
-import "context"
+import (
+	"context"
+	"github.com/apache/dubbo-go/protocol"
+)
 
 // GenericService uses for generic invoke for service call
 type GenericService struct {
@@ -32,5 +35,21 @@ func NewGenericService(referenceStr string) *GenericService {
 
 // Reference gets referenceStr from GenericService
 func (u *GenericService) Reference() string {
+	return u.referenceStr
+}
+
+// GenericResultService uses for generic invoke for service call, returns a raw protocol.Result
+type GenericResultService struct {
+	Invoke       func(ctx context.Context, args []interface{}) protocol.Result `dubbo:"$invoke"`
+	referenceStr string
+}
+
+// NewGenericResultService returns a GenericService instance
+func NewGenericResultService(referenceStr string) *GenericResultService {
+	return &GenericResultService{referenceStr: referenceStr}
+}
+
+// Reference gets referenceStr from GenericService
+func (u *GenericResultService) Reference() string {
 	return u.referenceStr
 }
